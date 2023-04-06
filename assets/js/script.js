@@ -114,7 +114,7 @@ var displayPage = function (weather) {
     // Create uv-index element
     var uvIndex = document.createElement('p');
     var uvIndexValue = weather.current.uvi.toFixed(1);
-    uvIndexElement.id = "uv-index";
+    uvIndex.id = "uv-index";
     if (uvIndexValue >= 0) {
         uvIndex.className = "uv-index-green"
     }
