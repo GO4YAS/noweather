@@ -10,7 +10,7 @@ var search = document.querySelector('#search');
 var historyButtons = document.querySelector("#history-buttons")
 var historyCard = document.querySelector("#history")
 var trash = document.querySelector("#trash")
-var searchHistoryArray = []
+var HistoryArray = []
 
 
 var formHandler = function (event) {
