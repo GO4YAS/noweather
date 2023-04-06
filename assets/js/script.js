@@ -28,7 +28,7 @@ var formHandler = function (event) {
         History.innerHTML = cityname;
         historyButtons.appendChild(History);
         historyCard.removeAttribute("style")
-        getWeatherInfo(cityname);
+        WeatherInfo(cityname);
         cityNameInput.value = "";
     }
     else {
@@ -81,7 +81,7 @@ var WeatherInfo = function (cityname) {
         .then(function (response) {
             console.log(response);
             // send response data to displayWeather function for final display 
-            displayWeather(response);
+            display(response);
 
         });
 };
