@@ -96,6 +96,28 @@ windSpeedEl.textContent = windSpeedText;
 // Append wind speed element to current weather element
 currentWeatherEl.appendChild(windSpeedEl);
 
+// Create UV index element
+const createUVIndexElement = (value) => {
+  const uvIndex = document.createElement('p');
+  const roundedValue = value.toFixed(1);
+  uvIndex.id = "uv-index";
+  uvIndex.innerHTML = "<strong>UV Index:</strong> <span>" + roundedValue + "</span>";
+
+  if (roundedValue >= 8) {
+    uvIndex.classList.add('uv-index-red');
+  } else if (roundedValue >= 3) {
+    uvIndex.classList.add('uv-index-yellow');
+  } else if (roundedValue >= 0) {
+    uvIndex.classList.add('uv-index-green');
+  }
+
+  return uvIndex;
+};
+
+const uvIndexValue = weather.current.uvi;
+currentWeatherEl.appendChild(createUVIndexElement(uvIndexValue));
+
+
 // Get extended forecast data
 const forecastArray = weather.daily;
 
