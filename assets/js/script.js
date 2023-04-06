@@ -81,7 +81,7 @@ var WeatherInfo = function (cityname) {
         .then(function (response) {
             console.log(response);
             // send response data to displayWeather function for final display 
-            Finaldisplay(response);
+            displayPage(response);
 
         });
 };
@@ -185,4 +185,4 @@ cityForm.addEventListener("submit", formHandler);
 historyButtons.addEventListener("click", buttonHandler);
 trash.addEventListener("click", Clear);
 
-loadHistory();
+ReloadHistory();
