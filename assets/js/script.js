@@ -26,7 +26,7 @@ var formHandler = function (event) {
         History.className = "btn";
         History.setAttribute("data-city", cityname)
         History.innerHTML = cityname;
-        historyButtons.appendChild(searchHistory);
+        historyButtons.appendChild(History);
         historyCard.removeAttribute("style")
         getWeatherInfo(cityname);
         cityNameInput.value = "";
