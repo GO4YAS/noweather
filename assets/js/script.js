@@ -85,107 +85,86 @@ var displayWeather = function (weather) {
     humidity.innerHTML = "<strong>Humidity:</strong> " + weather.current.humidity + "%";
     currentWeather.appendChild(humidity);
 
-   // Create wind speed paragraph element
-var windSpeedEl = document.createElement('p');
-windSpeedEl.id = "wind-speed";
+     // Create Wind Speed element
+     var windSpeed = document.createElement('p');
+     windSpeed.id = "wind-speed";
+     windSpeed.innerHTML = "<strong>Wind Speed:</strong> " + weather.current.wind_speed.toFixed(1) + " MPH";
+     currentWeatherEl.appendChild(windSpeed);
+ 
+     // Create uv-index element
+     var uvIndex = document.createElement('p');
+     var uvIndexValue = weather.current.uvi.toFixed(1);
+     uvIndex.id = "uv-index";
+     if (uvIndexValue >= 0) {
+         uvIndex.className = "uv-index-green"
+     }
+     if (uvIndexValue >= 3) {
+         uvIndex.className = "uv-index-yellow"
+     }
+     if (uvIndexValue >= 8) {
+         uvIndex.className = "uv-index-red"
+     }
+     uvIndex.innerHTML = "<strong>UV Index:</strong> <span>" + uvIndexValue + "</span>";
+     currentWeatherEl.appendChild(uvIndex);
+ 
+     // Get extended forecast data
+     var forecastArray = weather.daily;
+ 
+     // Create day cards for extended forecast
+     for (let i = 0; i < forecastArray.length - 3; i++) {
+         var date = (today.getMonth() + 1) + '/' + (today.getDate() + i + 1) + '/' + today.getFullYear();
+         var weatherIcon = forecastArray[i].weather[0].icon;
+         var weatherDescription = forecastArray[i].weather[0].description;
+         var weatherIconLink = "<img src='http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png' alt='" + weatherDescription + "' title='" + weatherDescription + "'  />"
+         var dayEl = document.createElement("div");
+         dayEl.className = "day";
+         dayEl.innerHTML = "<p><strong>" + date + "</strong></p>" +
+             "<p>" + weatherIconLink + "</p>" +
+             "<p><strong>Temp:</strong> " + forecastArray[i].temp.day.toFixed(1) + "°F</p>" +
+             "<p><strong>Humidity:</strong> " + forecastArray[i].humidity + "%</p>"
+ 
+         fiveDayEl.appendChild(dayEl);
+ 
+     }
+ 
+ }
+ 
+ // Load any past city weather searches
+ var loadHistory = function () {
+     searchArray = JSON.parse(localStorage.getItem("weatherSearch"));
+ 
+     if (searchArray) {
+         searchHistoryArray = JSON.parse(localStorage.getItem("weatherSearch"));
+         for (let i = 0; i < searchArray.length; i++) {
+             var searchHistoryEl = document.createElement('button');
+             searchHistoryEl.className = "btn";
+             searchHistoryEl.setAttribute("data-city", searchArray[i])
+             searchHistoryEl.innerHTML = searchArray[i];
+             historyButtonsEl.appendChild(searchHistoryEl);
+             historyCardEl.removeAttribute("style");
+         }
+ 
+     }
+ }
+ 
+ // Search weather using search history buttons
+ var buttonClickHandler = function (event) {
+     var cityname = event.target.getAttribute("data-city");
+     if (cityname) {
+         getWeatherInfo(cityname);
+     }
+ }
+ 
+ // Clear Search History
+ var clearHistory = function (event) {
+     localStorage.removeItem("weatherSearch");
+     historyCardEl.setAttribute("style", "display: none");
+ }
+ 
+ cityFormEl.addEventListener("submit", formSubmitHandler);
+ historyButtonsEl.addEventListener("click", buttonClickHandler);
+ trashEl.addEventListener("click", clearHistory);
+ 
+ loadHistory();
 
-// Set wind speed text
-var windSpeedText = "Wind Speed: " + weather.current.wind_speed.toFixed(1) + " MPH";
-windSpeedEl.textContent = windSpeedText;
-
-// Append wind speed element to current weather element
-currentWeatherEl.appendChild(windSpeedEl);
-
-// Create UV index element
-const createUVIndexElement = (value) => {
-  const uvIndex = document.createElement('p');
-  const roundedValue = value.toFixed(1);
-  uvIndex.id = "uv-index";
-  uvIndex.innerHTML = "<strong>UV Index:</strong> <span>" + roundedValue + "</span>";
-
-  if (roundedValue >= 8) {
-    uvIndex.classList.add('uv-index-red');
-  } else if (roundedValue >= 3) {
-    uvIndex.classList.add('uv-index-yellow');
-  } else if (roundedValue >= 0) {
-    uvIndex.classList.add('uv-index-green');
-  }
-
-  return uvIndex;
-};
-
-const uvIndexValue = weather.current.uvi;
-currentWeatherEl.appendChild(createUVIndexElement(uvIndexValue));
-
-
-// Get extended forecast data
-const forecastArray = weather.daily;
-
-// Create day cards for extended forecast
-for (let i = 0; i < forecastArray.length - 3; i++) {
-  const date = `${today.getMonth() + 1}/${today.getDate() + i + 1}/${today.getFullYear()}`;
-  const weatherIcon = forecastArray[i].weather[0].icon;
-  const weatherDescription = forecastArray[i].weather[0].description;
-  const weatherIconLink = `<img src="http://openweathermap.org/img/wn/${weatherIcon}@2x.png"
-                            alt="${weatherDescription}" title="${weatherDescription}" />`;
-  const dayEl = document.createElement("div");
-  dayEl.className = "day";
-  dayEl.innerHTML = `<p><strong>${date}</strong></p>
-                     <p>${weatherIconLink}</p>
-                     <p><strong>Temp:</strong> ${forecastArray[i].temp.day.toFixed(1)}°F</p>
-                     <p><strong>Humidity:</strong> ${forecastArray[i].humidity}%</p>`;
-  
-  fiveDayEl.appendChild(dayEl);
-    }   
-
-}
-
-if (searchArray) {
-    searchHistoryArray = JSON.parse(localStorage.getItem("weatherSearch"));
-    for (let i = 0; i < searchArray.length; i++) {
-        var searchHistoryEl = document.createElement('button');
-        searchHistoryEl.className = "btn";
-        searchHistoryEl.setAttribute("data-city", searchArray[i])
-        searchHistoryEl.textContent = searchArray[i];
-        historyButtonsEl.appendChild(searchHistoryEl);
-        historyCardEl.removeAttribute("style");
-    }
-
-}
-// Function to handle search history button clicks
-function handleButtonClick(event) {
-    const city = event.target.dataset.city;
-    if (city) {
-      getWeather(city);
-    }
-  }
-  
-  // Function to clear search history
-  function clearHistory(event) {
-    localStorage.removeItem("weatherSearch");
-    historyCardEl.style.display = "none";
-  }
-  
-  // Add event listeners
-  cityFormEl.addEventListener("submit", formSubmitHandler);
-  historyButtonsEl.addEventListener("click", handleButtonClick);
-  trashEl.addEventListener("click", clearHistory);
-  
-  // Load search history
-  function loadHistory() {
-    const searchArray = JSON.parse(localStorage.getItem("weatherSearch"));
-    if (searchArray) {
-      const historyButtons = searchArray.map(city => {
-        const button = document.createElement("button");
-        button.className = "btn";
-        button.dataset.city = city;
-        button.textContent = city;
-        return button;
-      });
-      historyButtonsEl.append(...historyButtons);
-      historyCardEl.style.display = "";
-    }
-  }
-  
-  loadHistory();
   
