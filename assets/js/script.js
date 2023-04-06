@@ -42,6 +42,7 @@ var fetchWeatherInfo = function (cityName) {
             return response.json();
         })
         .then(function (response) {
+            console.log(response)
             var latitude = response.coord.lat;
             var longitude = response.coord.lon;
 
