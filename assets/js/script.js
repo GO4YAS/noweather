@@ -100,14 +100,14 @@ var displayPage = function (weather) {
     currentWeather.appendChild(temperature);
 
     // Create Humidity element
-    var humidityElement = document.createElement('p');
-    humidityElement.id = "humidity";
+    var humidity = document.createElement('p');
+    humidity.id = "humidity";
     humidity.innerHTML = "<strong>Humidity:</strong> " + weather.current.humidity + "%";
-    currentWeatherEl.appendChild(humidity);
+    currentWeather.appendChild(humidity);
 
     // Create Wind Speed element
-    var windElement = document.createElement('p');
-    windElement.id = "wind-speed";
+    var windSpeed = document.createElement('p');
+    windSpeed.id = "wind-speed";
     windSpeed.innerHTML = "<strong>Wind Speed:</strong> " + weather.current.wind_speed.toFixed(1) + " MPH";
     currentWeather.appendChild(windSpeed);
 
