@@ -112,7 +112,7 @@ var displayPage = function (weather) {
     currentWeather.appendChild(windSpeed);
 
     // Create uv-index element
-    var uvIndexElement = document.createElement('p');
+    var uvIndex = document.createElement('p');
     var uvIndexValue = weather.current.uvi.toFixed(1);
     uvIndexElement.id = "uv-index";
     if (uvIndexValue >= 0) {
