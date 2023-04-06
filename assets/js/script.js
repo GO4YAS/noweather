@@ -94,8 +94,8 @@ var displayPage = function (weather) {
         return;
     }
     // Create Temperature element
-    var temperatureElement = document.createElement('p');
-    temperatureElement.id = "temperature";
+    var temperature = document.createElement('p');
+    temperature.id = "temperature";
     temperature.innerHTML = "<strong>Temperature:</strong> " + weather.current.temp.toFixed(1) + "°F";
     currentWeather.appendChild(temperature);
 
