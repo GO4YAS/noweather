@@ -81,7 +81,7 @@ var WeatherInfo = function (cityname) {
         .then(function (response) {
             console.log(response);
             // send response data to displayWeather function for final display 
-            display(response);
+            Finaldisplay(response);
 
         });
 };
